@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-background: #FEFAE0; /* Ivory */
+  --color-on-background: #1E1E1E; /* Charcoal */
+  
+  --color-surface: #F0EFEB; /* Sand */
+  --color-on-surface: #1E1E1E; /* Charcoal */
+  --color-surface-variant: #E5E4E2;
+  --color-on-surface-variant: #6B7280; /* Muted */
+  
+  --color-surface-container-lowest: #FFFFFF;
+  --color-surface-container-low: #FEFAE0;
+  --color-surface-container: #F0EFEB;
+  --color-surface-container-high: #EAE8E3;
+  --color-surface-container-highest: #E0DED9;
+
+  --color-primary: #283618; /* Forest */
+  --color-on-primary: #FEFAE0; /* Ivory */
+  --color-primary-container: #606C38; /* Olive */
+  --color-on-primary-container: #FEFAE0;
+  
+  --color-secondary: #606C38; /* Olive */
+  --color-on-secondary: #FEFAE0;
+  --color-secondary-container: #DDA15E; /* Bronze */
+  --color-on-secondary-container: #1E1E1E;
+  
+  --color-tertiary: #DDA15E; /* Bronze */
+  --color-on-tertiary: #1E1E1E;
+  --color-tertiary-container: #BC6C25; /* Copper */
+  --color-on-tertiary-container: #FEFAE0;
+  
+  --color-outline: #6B7280; /* Muted */
+  --color-outline-variant: #D1D5DB; /* Light gray */
+  
+  --color-error: #B3261E;
+  --color-on-error: #FFFFFF;
+  --color-error-container: #F9DEDC;
+  --color-on-error-container: #410E0B;
+
+  --spacing-gutter-md: 24px;
+  --spacing-base: 4px;
+  --spacing-gutter-sm: 16px;
+  --spacing-margin-sm: 16px;
+  --spacing-margin-md: 32px;
+  --spacing-max-width: 1440px;
+
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 20px;
+  --spacing-lg: 32px;
+  --spacing-xl: 48px;
+  --spacing-2xl: 64px;
+
+  --font-body-sm: Geist, sans-serif;
+  --font-body-lg: Geist, sans-serif;
+  --font-label-sm: JetBrains Mono, monospace;
+  --font-headline-md: Geist, sans-serif;
+  --font-headline-lg-mobile: Geist, sans-serif;
+  --font-headline-lg: Geist, sans-serif;
+  --font-label-md: JetBrains Mono, monospace;
+  --font-label-caps: JetBrains Mono, monospace;
+  --font-code-sm: JetBrains Mono, monospace;
+
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 20px;
+  
+  --text-body-lg: 16px;
+  --text-body-lg--line-height: 24px;
+  
+  --text-label-sm: 11px;
+  --text-label-sm--line-height: 14px;
+  --text-label-sm--letter-spacing: 0.05em;
+
+  --text-headline-md: 20px;
+  --text-headline-md--line-height: 28px;
+
+  --text-headline-lg-mobile: 24px;
+  --text-headline-lg-mobile--line-height: 32px;
+
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 40px;
+
+  --text-label-md: 13px;
+  --text-label-md--line-height: 16px;
+
+  --text-label-caps: 11px;
+  --text-label-caps--line-height: 16px;
+  --text-label-caps--letter-spacing: 0.1em;
+  
+  --text-code-sm: 12px;
+  --text-code-sm--line-height: 16px;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  font-family: var(--font-body-lg);
+}
+
+.ui-panel {
+  background-color: var(--color-surface-container);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 4px;
+}
+
+.ui-border {
+  border: 1px solid var(--color-outline-variant);
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-background); }
+::-webkit-scrollbar-thumb { background: var(--color-outline-variant); border-radius: 2px; }
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    vertical-align: middle;
+    font-size: 20px;
+}
