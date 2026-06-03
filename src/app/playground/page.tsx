@@ -83,18 +83,18 @@ export default function PlaygroundPage() {
                 <div className="flex justify-between items-start mb-6">
                   <div>
                     <span className="text-label-caps text-primary uppercase tracking-widest">Algorithmic Sprint</span>
-                    <h2 className="text-headline-md text-on-surface mt-1">Array Reordering (Medium)</h2>
+                    <h2 className="text-headline-md text-on-surface mt-1">Case: Transaction Batch Normalization (Medium)</h2>
                   </div>
                   <span className="px-3 py-1 bg-surface-container-highest border border-outline-variant rounded text-label-caps text-on-surface font-bold">15:00 MIN</span>
                 </div>
                 
                 <div className="space-y-4 text-body-sm text-on-surface-variant">
-                  <p>Given an array of integers, write a function that moves all zeros to the end of the array while maintaining the relative order of the non-zero elements.</p>
-                  <p><strong>Note:</strong> You must do this in-place without making a copy of the array.</p>
-                  
+                  <p>You are a junior developer at Acme Payments. The payments team receives transaction batches where failed transactions are marked with <strong>status: 0</strong> and successful ones with <strong>status: 1</strong>. They need a utility that reorders the array so that all successful transactions appear first while keeping the original relative order.</p>
+                  <p><strong>Requirements:</strong> Implement <code>reorderTransactions(transactions)</code> in-place (no extra array), preserve relative order, and aim for O(n) time.</p>
+
                   <div className="bg-surface p-4 border border-outline-variant rounded font-code-sm">
-                    <p>Input: [0, 1, 0, 3, 12]</p>
-                    <p>Output: [1, 3, 12, 0, 0]</p>
+                    <pre className="whitespace-pre-wrap"><code>Input: {`[{"id":1,"status":0},{"id":2,"status":1},{"id":3,"status":0},{"id":4,"status":1}]`}</code></pre>
+                    <pre className="whitespace-pre-wrap mt-2"><code>Output: {`[{"id":2,"status":1},{"id":4,"status":1},{"id":1,"status":0},{"id":3,"status":0}]`}</code></pre>
                   </div>
                 </div>
               </div>
@@ -109,7 +109,9 @@ export default function PlaygroundPage() {
                     value={code}
                     onChange={e => setCode(e.target.value)}
                     className="flex-1 bg-background text-primary font-code-sm p-4 focus:outline-none resize-none"
-                    placeholder="function moveZeroes(nums) {&#10;  // Write your logic here&#10;}"
+                    placeholder={`/* You are a junior developer at Acme Payments.
+  Implement reorderTransactions(transactions) in-place to move failed transactions (status:0)
+  to the end while preserving relative order of successful ones. */\nfunction reorderTransactions(transactions) {\n  // Write your logic here\n}`}
                     spellCheck={false}
                   ></textarea>
                   

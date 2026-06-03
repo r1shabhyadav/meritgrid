@@ -97,6 +97,12 @@ body {
   background-color: var(--color-background);
   color: var(--color-on-background);
   font-family: var(--font-body-lg);
+  background-image: 
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(30, 30, 30, 0.08) 10px, rgba(30, 30, 30, 0.08) 20px),
+    repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(30, 30, 30, 0.08) 10px, rgba(30, 30, 30, 0.08) 20px),
+    url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' result='noise' seed='2'/%3E%3C/filter%3E%3Crect width='200' height='200' fill='%23FEFAE0'/%3E%3Crect width='200' height='200' fill='%23000000' opacity='0.12' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 100% 100%, 100% 100%, 400px 400px;
+  background-attachment: fixed;
 }
 
 .ui-panel {

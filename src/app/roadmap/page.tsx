@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import { PhaseInteractiveSection } from "./page-interactive";
 
 interface Phase {
   id: number;
@@ -36,6 +37,10 @@ export default function RoadmapPage() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
+    const [expandedPhase, setExpandedPhase] = useState<number | null>(null);
+    const [selectedTopic, setSelectedTopic] = useState<{ phaseId: number; topicName: string } | null>(null);
+    const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+    const [feedbackSummary, setFeedbackSummary] = useState("");
 
   const startDiagnostic = (e: React.FormEvent) => {
     e.preventDefault();
@@ -295,6 +300,17 @@ export default function RoadmapPage() {
                   </div>
                 ))}
               </div>
+                <PhaseInteractiveSection 
+                  roadmap={roadmap}
+                  expandedPhase={expandedPhase}
+                  setExpandedPhase={setExpandedPhase}
+                  selectedTopic={selectedTopic}
+                  setSelectedTopic={setSelectedTopic}
+                  showFeedbackModal={showFeedbackModal}
+                  setShowFeedbackModal={setShowFeedbackModal}
+                  feedbackSummary={feedbackSummary}
+                  setFeedbackSummary={setFeedbackSummary}
+                />
 
               <div className="mt-12 ui-panel p-8 bg-[linear-gradient(45deg,rgba(43,45,49,0.5),transparent)] border-primary/50 relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-20">

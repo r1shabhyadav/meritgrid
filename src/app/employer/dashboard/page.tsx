@@ -34,7 +34,12 @@ export default function EmployerDashboard() {
     fetch('/api/candidates')
       .then(res => res.json())
       .then(data => {
-        setCandidates(data);
+        // Ensure data is an array before setting
+        setCandidates(Array.isArray(data) ? data : []);
+        setLoading(false);
+      })
+      .catch(() => {
+        setCandidates([]);
         setLoading(false);
       });
   }, []);
