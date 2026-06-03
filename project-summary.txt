@@ -1,0 +1,219 @@
+MeritGrid Project Summary
+=========================
+
+Project Name: MeritGrid
+Repository: /workspaces/codespaces-blank/meritgrid
+Framework: Next.js 16 (App Router)
+Language: TypeScript
+Styling: Tailwind CSS v4
+AI Integration: Google Gemini via @google/genai
+Database: PostgreSQL via Prisma ORM
+Charts: Recharts
+
+
+1. Overview
+-----------
+MeritGrid is an AI-powered professional engineering platform designed to help learners build proof of capability through personalized roadmaps, diagnostic quizzes, portfolio project evaluation, and employer candidate discovery.
+
+The platform combines:
+- AI-generated learning roadmaps and diagnostics
+- Real-world project evaluation and feedback
+- Competitive playground challenges
+- Employer candidate discovery and filtering
+
+
+2. Project Structure
+--------------------
+Root folder:
+- README.md
+- package.json
+- next.config.ts
+- tsconfig.json
+- prisma/schema.prisma
+- src/app/...
+- src/lib/prisma.ts
+
+Major app pages:
+- /src/app/page.tsx - Landing page and product overview
+- /src/app/login/page.tsx - Login/signup screen with learner/employer mode
+- /src/app/roadmap/page.tsx - AI-based goal input, quiz flow, and roadmap display
+- /src/app/roadmap/page-interactive.tsx - Interactive roadmap phase and topic UI
+- /src/app/playground/page.tsx - Coding challenge and leaderboard UI
+- /src/app/portfolio/page.tsx - Portfolio submission, AI evaluation, charts, and score feedback
+- /src/app/employer/dashboard/page.tsx - Employer dashboard for candidate discovery and filters
+
+API routes and functionality:
+- /src/app/api/ai/generate-diagnostic/route.ts - Creates a 20-question diagnostic quiz using Google Gemini
+- /src/app/api/ai/generate-roadmap/route.ts - Creates a personalized roadmap from goal + diagnostic score
+- /src/app/api/ai/evaluate-project/route.ts - Evaluates a learner project link with AI and stores it in the database
+- /src/app/api/auth/login/route.ts - Mock authentication endpoint
+- /src/app/api/candidates/route.ts - Returns learner candidates with skills and projects
+
+
+3. Technology Stack
+-------------------
+Dependencies:
+- next 16.2.7
+- react 19.2.4
+- react-dom 19.2.4
+- @google/genai 2.7.0
+- @prisma/client 5.14.0
+- recharts 3.8.1
+
+DevDependencies:
+- prisma 5.14.0
+- tailwindcss 4
+- @tailwindcss/postcss 4
+- eslint 9
+- eslint-config-next 16.2.7
+- typescript 5
+- tsx 4.22.4
+- @types/node, @types/react, @types/react-dom
+
+
+4. Data Model and Database
+--------------------------
+Prisma schema models:
+- User
+  - id, email, name, role, avatar, createdAt
+  - learner-specific fields: hireabilityIndex, location, projects, skills
+  - role values: learner, employer
+
+- Project
+  - id, title, description, score, feedback, userId, createdAt
+  - linked to User
+
+- Skill
+  - id, name, proficiency, userId
+  - linked to User
+
+Database connection:
+- Datasource provider: postgresql
+- Uses env("DATABASE_URL") for connection
+- Prisma client is created in src/lib/prisma.ts with a singleton pattern for development
+
+
+5. Application Features
+------------------------
+Landing Page (/)
+- Product positioning and navigation
+- Sections for roadmap, playground, portfolio, and employer discovery
+- Static hero and metrics display
+
+Login Page (/login)
+- Learner/employer mode toggle
+- Sign in and sign up UI
+- Mock routes to redirect learners to /roadmap and employers to /employer/dashboard
+
+AI Roadmap Generator (/roadmap)
+- Goal input and language selection
+- Diagnostic quiz generation via /api/ai/generate-diagnostic
+- Quiz answer collection and score calculation
+- Roadmap generation via /api/ai/generate-roadmap
+- Interactive roadmap phase expansion and personalized feedback modal
+- Supports AI/ML quick-overview and more advanced roadmap flows
+
+Coding Playground (/playground)
+- Challenge and leaderboard tabs
+- Mock code editor and submit behavior
+- Simulated automated scoring and feedback
+- Leaderboard with top candidates
+
+Portfolio & Project Evaluation (/portfolio)
+- Project link submission form
+- Fetches AI evaluation from /api/ai/evaluate-project
+- Displays score, feedback, and hireability index delta
+- Shows skill radar and hireability history charts
+- Demo verified projects section
+
+Employer Dashboard (/employer/dashboard)
+- Fetches learner candidates from /api/candidates
+- Filter by required skill and minimum hireability index
+- AI sorting toggle and ranking view
+- Candidate table with skills, projects, and hireability index bars
+- Recruitment intelligence KPI cards
+
+
+6. AI Integration and Backend Flow
+----------------------------------
+Google Gemini endpoints are used for:
+- Generating diagnostic quizzes in strict JSON format
+- Generating personalized roadmap output in strict JSON
+- Evaluating projects and producing a score + feedback
+
+Key AI flow points:
+- /api/ai/generate-diagnostic creates 20 MCQ and blank-type questions
+- /api/ai/generate-roadmap converts the diagnostic score into a 3-phase roadmap and case study
+- /api/ai/evaluate-project evaluates a submitted project URL and stores results in Prisma
+
+Mock / placeholder logic:
+- Authentication is mocked in /api/auth/login
+- Playground challenge result is simulated with a timeout
+- AI fallback data is provided if Gemini returns invalid or missing JSON
+
+
+7. UI / UX and Visual Design
+----------------------------
+Design highlights:
+- Modern dark and surface-based UI with glass-like panels
+- Responsive sidebar navigation on dashboard pages
+- Hero section with product messaging and CTA buttons
+- Interactive phase panels and modal popups
+- Use of Material Symbols icons and Tailwind utility classes
+- Data visualization using Recharts charts in portfolio
+
+
+8. Deployment and Build
+------------------------
+Local commands:
+- npm run dev  -> run development server
+- npm run build -> build production app
+- npm run start -> serve production build
+- npm run lint -> run ESLint checks
+
+Deployment platform:
+- Standard Next.js deployment (Vercel recommended)
+- Requires environment variables: DATABASE_URL, GEMINI_API_KEY
+
+
+9. Notes for Presentation / Report
+----------------------------------
+Use these themes in slides:
+- Problem statement: credentials vs capability
+- AI-enabled learning and validation pipeline
+- Learner journey: goal -> diagnostic -> roadmap -> portfolio
+- Employer journey: candidate discovery and AI scoring
+- Tech architecture: Next.js frontend + server routes + Prisma + Google Gemini
+- UX features: interactive roadmap, real-time charts, competitive playground
+
+Potential slides:
+1. Project Overview and Vision
+2. User Personas: Learners and Employers
+3. Architecture Diagram
+4. Key Features and Flows
+5. AI Integration and Data Model
+6. Screenshots of Landing Page, Roadmap, Portfolio, Employer Dashboard
+7. Technology Stack and Deployment
+
+
+10. Important Files
+-------------------
+- README.md
+- package.json
+- prisma/schema.prisma
+- src/lib/prisma.ts
+- src/app/page.tsx
+- src/app/login/page.tsx
+- src/app/roadmap/page.tsx
+- src/app/roadmap/page-interactive.tsx
+- src/app/playground/page.tsx
+- src/app/portfolio/page.tsx
+- src/app/employer/dashboard/page.tsx
+- src/app/api/ai/generate-diagnostic/route.ts
+- src/app/api/ai/generate-roadmap/route.ts
+- src/app/api/ai/evaluate-project/route.ts
+- src/app/api/auth/login/route.ts
+- src/app/api/candidates/route.ts
+
+
+End of MeritGrid Summary

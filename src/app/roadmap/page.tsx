@@ -3,11 +3,19 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { PhaseInteractiveSection } from "./page-interactive";
 
+interface Topic {
+  name: string;
+  timeToFinish: string;
+  freeResources: string[];
+  caseBasedProblems: string[];
+}
+
 interface Phase {
   id: number;
   name: string;
   duration: string;
-  resources: string[];
+  topics?: Topic[];
+  resources?: string[];
   status: string;
 }
 
@@ -45,7 +53,68 @@ export default function RoadmapPage() {
   const startDiagnostic = (e: React.FormEvent) => {
     e.preventDefault();
     if (!goal.trim()) return;
+    const goalLower = goal.trim().toLowerCase();
+    const isAiMl = (goalLower.includes("ai") && goalLower.includes("ml")) || goalLower.includes("ai/ml") || goalLower.includes("ai ml");
+    if (isAiMl) {
+      // Show a simple AI/ML overview with Phase 1 / Phase 2 divisions
+      const overview: Roadmap = {
+        title: "AI & ML Roadmap (Overview)",
+        phases: [
+          { id: 1, name: "Phase 1", duration: "4-8 weeks", topics: [], resources: [], status: "not-started" },
+          { id: 2, name: "Phase 2", duration: "8-16 weeks", topics: [], resources: [], status: "not-started" },
+        ],
+        caseStudy: { title: "AI Case Study", description: "A practical case study will appear after completing phases." },
+      };
+
+      setRoadmap(overview);
+      setStep("roadmap");
+      return;
+    }
+
     setStep("diagnostic");
+  };
+
+  const handlePhaseBegin = (phaseId: number) => {
+    // If the current roadmap is the AI/ML overview, generate a detailed roadmap for Phase 1
+    if (!roadmap) return;
+    if (roadmap.title.includes("AI & ML")) {
+      if (phaseId === 1) {
+        const detailed: Roadmap = {
+          title: "AI & ML Roadmap",
+          phases: [
+            {
+              id: 1,
+              name: "Foundations: Math, Python & ML Basics",
+              duration: "6-10 weeks",
+              status: "in-progress",
+              topics: [
+                { name: "Linear Algebra & Calculus", timeToFinish: "1-2 weeks", freeResources: ["3Blue1Brown", "Khan Academy"], caseBasedProblems: ["Matrix ops for ML"] },
+                { name: "Probability & Statistics", timeToFinish: "1-2 weeks", freeResources: ["StatQuest", "Khan Academy"], caseBasedProblems: ["Bayes problems"] },
+                { name: "Python for Data Science", timeToFinish: "1-2 weeks", freeResources: ["Official Python Tutorial", "freeCodeCamp"], caseBasedProblems: ["Data munging exercises"] },
+                { name: "Data Wrangling & EDA", timeToFinish: "1 week", freeResources: ["Pandas docs", "Kaggle"], caseBasedProblems: ["EDA on dataset"] },
+                { name: "Intro to Machine Learning", timeToFinish: "1-2 weeks", freeResources: ["Andrew Ng - ML", "fast.ai intro"], caseBasedProblems: ["Implement linear regression"] },
+              ],
+            },
+            {
+              id: 2,
+              name: "Advanced Topics: Deep Learning & Specializations",
+              duration: "8-16 weeks",
+              status: "not-started",
+              topics: [
+                { name: "Deep Learning Fundamentals", timeToFinish: "3-4 weeks", freeResources: ["DeepLearning.AI", "fast.ai"], caseBasedProblems: ["Train CNN on sample dataset"] },
+                { name: "Natural Language Processing", timeToFinish: "2-4 weeks", freeResources: ["Hugging Face Tutorials"], caseBasedProblems: ["Text classification project"] },
+                { name: "Computer Vision", timeToFinish: "2-4 weeks", freeResources: ["OpenCV docs", "PyImageSearch"], caseBasedProblems: ["Image classification project"] },
+              ],
+            },
+          ],
+          caseStudy: { title: "Classification Project", description: "Build and deploy a classification model end-to-end." },
+        };
+
+        setRoadmap(detailed);
+        setExpandedPhase(1);
+      }
+      // Optionally handle Phase 2 generation in future
+    }
   };
 
   const submitLanguage = async (e: React.FormEvent) => {
@@ -285,32 +354,49 @@ export default function RoadmapPage() {
                     <div className="md:w-3/4">
                       <h4 className="text-label-sm text-on-surface-variant uppercase tracking-widest mb-3">Curated Resources</h4>
                       <div className="flex flex-wrap gap-2">
-                        {phase.resources.map(res => (
-                          <span key={res} className="px-3 py-1 bg-surface-container-highest border border-outline-variant rounded text-label-md text-on-surface">
+                        {(
+                          phase.resources?.length
+                            ? phase.resources
+                            : phase.topics?.flatMap(topic => topic.freeResources) ?? []
+                        ).map((res, index) => (
+                          <span key={`${res}-${index}`} className="px-3 py-1 bg-surface-container-highest border border-outline-variant rounded text-label-md text-on-surface">
                             {res}
                           </span>
                         ))}
                       </div>
-                      <div className="mt-4 flex justify-end">
-                        <button className="px-4 py-2 border border-primary text-primary hover:bg-primary hover:text-on-primary font-bold text-label-md uppercase rounded transition-colors">
-                          Begin Phase
+                      <div className="mt-4 flex flex-col gap-4">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (expandedPhase === phase.id) {
+                              setExpandedPhase(null);
+                              return;
+                            }
+                            setExpandedPhase(phase.id);
+                            handlePhaseBegin(phase.id);
+                          }}
+                          className="px-4 py-2 border border-primary text-primary hover:bg-primary hover:text-on-primary font-bold text-label-md uppercase rounded transition-colors"
+                        >
+                          {expandedPhase === phase.id ? "Close Phase" : "Begin Phase"}
                         </button>
+
+                        <PhaseInteractiveSection
+                          phase={phase}
+                          expandedPhase={expandedPhase}
+                          setExpandedPhase={setExpandedPhase}
+                          selectedTopic={selectedTopic}
+                          setSelectedTopic={setSelectedTopic}
+                          showFeedbackModal={showFeedbackModal}
+                          setShowFeedbackModal={setShowFeedbackModal}
+                          feedbackSummary={feedbackSummary}
+                          setFeedbackSummary={setFeedbackSummary}
+                          onPhaseBegin={handlePhaseBegin}
+                        />
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-                <PhaseInteractiveSection 
-                  roadmap={roadmap}
-                  expandedPhase={expandedPhase}
-                  setExpandedPhase={setExpandedPhase}
-                  selectedTopic={selectedTopic}
-                  setSelectedTopic={setSelectedTopic}
-                  showFeedbackModal={showFeedbackModal}
-                  setShowFeedbackModal={setShowFeedbackModal}
-                  feedbackSummary={feedbackSummary}
-                  setFeedbackSummary={setFeedbackSummary}
-                />
 
               <div className="mt-12 ui-panel p-8 bg-[linear-gradient(45deg,rgba(43,45,49,0.5),transparent)] border-primary/50 relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-20">
